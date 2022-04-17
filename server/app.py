@@ -8,26 +8,21 @@ from flask_mysqldb import MySQL
 load_dotenv()
 
 
-USER = os.getenv('USER')
-PASSWORD = os.getenv('PASSWORD')
-DB_NAME = os.getenv('DB_NAME')
-HOST = 'localhost'
-
 app = Flask(__name__)
 mysql = MySQL(app)
 
 app.config.from_object(__name__)
-app.config['MYSQL_HOST'] = HOST
-app.config['MYSQL_USER'] = USER
-app.config['MYSQL_PASSWORD'] = PASSWORD
-app.config['MYSQL_DB'] = DB_NAME
+app.config['MYSQL_HOST'] = os.getenv('DB_HOST')
+app.config['MYSQL_DB'] = os.getenv('DB_NAME')
+app.config['MYSQL_USER'] = os.getenv('USER')
+app.config['MYSQL_PASSWORD'] = os.getenv('PASSWORD')
 
 CORS(app)
 
 @app.route('/table', methods=['GET'])
 def table():
     cursor = mysql.connection.cursor()
-    cursor.execute("SELECT * FROM info")
+    cursor.execute(f"SELECT * FROM {os.getenv('TABLE_NAME')}")
     data = cursor.fetchall()
     cursor.close()
     return jsonify(data)

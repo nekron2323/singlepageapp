@@ -56,12 +56,10 @@ export default {
   methods: {
     getData () {
       const path = 'http://localhost/table'
-      console.log('-------------------')
       axios.get(path)
         .then((res) => {
           this.data = res.data
           this.viewData = res.data.slice(0, this.size)
-          console.log('-------------------')
         })
     },
     getParams (params) {
